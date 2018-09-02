@@ -22,6 +22,25 @@ import org.junit.internal.InexactComparisonCriteria;
  * @since 4.0
  */
 public class Assert {
+
+    private static AssertionCallback assertionCallback = null;
+
+    public void setAssertionCallback(AssertionCallback callback) {
+        assertionCallback = callback;
+    }
+
+    public static AssertionError callAssertionCallback(AssertionError assertionError) {
+        if (assertionCallback != null) {
+            try {
+                assertionCallback.handle(assertionError);
+            } catch (Exception ex) {
+                System.err.println("Exception while calling assertion error callback:");
+                ex.printStackTrace();
+            }
+        }
+        return assertionError;
+    }
+
     /**
      * Protect constructor since it is a static only class
      */
@@ -83,9 +102,9 @@ public class Assert {
      */
     static public void fail(String message) {
         if (message == null) {
-            throw new AssertionError();
+            throw callAssertionCallback(new AssertionError());
         }
-        throw new AssertionError(message);
+        throw callAssertionCallback(new AssertionError(message));
     }
 
     /**
@@ -112,8 +131,8 @@ public class Assert {
             return;
         } else if (expected instanceof String && actual instanceof String) {
             String cleanMessage = message == null ? "" : message;
-            throw new ComparisonFailure(cleanMessage, (String) expected,
-                    (String) actual);
+            throw callAssertionCallback(new ComparisonFailure(cleanMessage, (String) expected,
+                    (String) actual));
         } else {
             failNotEquals(message, expected, actual);
         }
