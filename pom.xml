@@ -69,35 +69,24 @@
     </prerequisites>
 
     <scm>
-        <connection>scm:git:git://github.com/junit-team/junit.git</connection>
-        <developerConnection>scm:git:git@github.com:junit-team/junit.git</developerConnection>
-        <url>http://github.com/junit-team/junit/tree/master</url>
-      <tag>r4.12</tag>
-  </scm>
+        <connection>scm:git:git@github.com:YugaByte/junit3.git</connection>
+        <developerConnection>scm:git:git@github.com:YugaByte/junit3.git</developerConnection>
+        <url>https://github.com/yugabyte/junit3</url>
+        <tag>HEAD</tag>
+    </scm>
     <issueManagement>
         <system>github</system>
-        <url>https://github.com/junit-team/junit/issues</url>
+        <url>https://github.com/yugabyte/junit4/issues</url>
     </issueManagement>
-    <ciManagement>
-        <system>jenkins</system>
-        <url>https://junit.ci.cloudbees.com/</url>
-    </ciManagement>
     <distributionManagement>
-        <downloadUrl>https://github.com/junit-team/junit/wiki/Download-and-Install</downloadUrl>
-        <snapshotRepository>
-            <id>junit-snapshot-repo</id>
-            <name>Nexus Snapshot Repository</name>
-            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-        </snapshotRepository>
         <repository>
-            <id>junit-releases-repo</id>
-            <name>Nexus Release Repository</name>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+            <id>${yugabyte.releases.repository.id}</id>
+            <url>${yugabyte.releases.repository.url}</url>
         </repository>
-        <site>
-            <id>junit.github.io</id>
-            <url>gitsite:git@github.com/junit-team/junit.git</url>
-        </site>
+        <snapshotRepository>
+            <id>${yugabyte.snapshots.repository.id}</id>
+            <url>${yugabyte.snapshots.repository.url}</url>
+        </snapshotRepository>
     </distributionManagement>
 
     <properties>
