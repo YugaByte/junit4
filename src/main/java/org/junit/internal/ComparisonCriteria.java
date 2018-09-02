@@ -66,16 +66,16 @@ public abstract class ComparisonCriteria {
                     arrayEquals(message, expected, actual, false);
                 } catch (ArrayComparisonFailure e) {
                     e.addDimension(i);
-                    throw e;
+                    throw Assert.callAssertionCallback(e);
                 } catch (AssertionError e) {
                     // Array lengths differed.
-                    throw new ArrayComparisonFailure(header, e, i);
+                    throw Assert.callAssertionCallback(new ArrayComparisonFailure(header, e, i));
                 }
             } else {
                 try {
                     assertElementsEqual(expected, actual);
                 } catch (AssertionError e) {
-                    throw new ArrayComparisonFailure(header, e, i);
+                    throw Assert.callAssertionCallback(new ArrayComparisonFailure(header, e, i));
                 }
             }
         }
@@ -86,7 +86,8 @@ public abstract class ComparisonCriteria {
             try {
                 Assert.assertEquals(expected, actual);
             } catch (AssertionError e) {
-                throw new ArrayComparisonFailure(header, e, prefixLength);
+                throw Assert.callAssertionCallback(
+                    new ArrayComparisonFailure(header, e, prefixLength));
             }
         }
     }

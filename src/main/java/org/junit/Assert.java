@@ -23,6 +23,25 @@ import org.junit.internal.InexactComparisonCriteria;
  * @since 4.0
  */
 public class Assert {
+
+    private static AssertionCallback assertionCallback = null;
+
+    public void setAssertionCallback(AssertionCallback callback) {
+        assertionCallback = callback;
+    }
+
+    public static AssertionError callAssertionCallback(AssertionError assertionError) {
+        if (assertionCallback != null) {
+            try {
+                assertionCallback.handle(assertionError);
+            } catch (Exception ex) {
+                System.err.println("Exception while calling assertion error callback:");
+                ex.printStackTrace();
+            }
+        }
+        return assertionError;
+    }
+
     /**
      * Protect constructor since it is a static only class
      */
@@ -84,9 +103,9 @@ public class Assert {
      */
     public static void fail(String message) {
         if (message == null) {
-            throw new AssertionError();
+            throw callAssertionCallback(new AssertionError());
         }
-        throw new AssertionError(message);
+        throw callAssertionCallback(new AssertionError(message));
     }
 
     /**
@@ -114,8 +133,8 @@ public class Assert {
         }
         if (expected instanceof String && actual instanceof String) {
             String cleanMessage = message == null ? "" : message;
-            throw new ComparisonFailure(cleanMessage, (String) expected,
-                    (String) actual);
+            throw callAssertionCallback(new ComparisonFailure(cleanMessage, (String) expected,
+                    (String) actual));
         } else {
             failNotEquals(message, expected, actual);
         }
@@ -1021,13 +1040,13 @@ public class Assert {
                 // The AssertionError(String, Throwable) ctor is only available on JDK7.
                 AssertionError assertionError = new AssertionError(mismatchMessage);
                 assertionError.initCause(actualThrown);
-                throw assertionError;
+                throw callAssertionCallback(assertionError);
             }
         }
         String notThrownMessage = buildPrefix(message) + String
                 .format("expected %s to be thrown, but nothing was thrown",
                         formatClass(expectedThrowable));
-        throw new AssertionError(notThrownMessage);
+        throw callAssertionCallback(new AssertionError(notThrownMessage));
     }
 
     private static String buildPrefix(String message) {
