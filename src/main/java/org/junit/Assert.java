@@ -26,7 +26,7 @@ public class Assert {
 
     private static AssertionCallback assertionCallback = null;
 
-    public void setAssertionCallback(AssertionCallback callback) {
+    public static void setAssertionCallback(AssertionCallback callback) {
         assertionCallback = callback;
     }
 
