@@ -69,9 +69,9 @@
     </prerequisites>
 
     <scm>
-        <connection>scm:git:git@github.com:YugaByte/junit3.git</connection>
-        <developerConnection>scm:git:git@github.com:YugaByte/junit3.git</developerConnection>
-        <url>https://github.com/yugabyte/junit3</url>
+        <connection>scm:git:git@github.com:YugaByte/junit4.git</connection>
+        <developerConnection>scm:git:git@github.com:YugaByte/junit4.git</developerConnection>
+        <url>https://github.com/yugabyte/junit4</url>
         <tag>HEAD</tag>
     </scm>
     <issueManagement>

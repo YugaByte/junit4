@@ -12,3 +12,5 @@ out
 java.hprof.txt
 .gitattributes
 *.versionsBackup
+*.releaseBackup
+release.properties
