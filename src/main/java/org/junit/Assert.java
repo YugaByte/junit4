@@ -23,22 +23,23 @@ import org.junit.internal.InexactComparisonCriteria;
  */
 public class Assert {
 
-    private static AssertionCallback assertionCallback = null;
+    private static ErrorCallback errorCallback = null;
 
-    public void setAssertionCallback(AssertionCallback callback) {
-        assertionCallback = callback;
+    public void setErrorCallback(ErrorCallback callback) {
+        errorCallback = callback;
     }
 
-    public static AssertionError callAssertionCallback(AssertionError assertionError) {
-        if (assertionCallback != null) {
+    public static Error callErrorCallback(Error ex) {
+        if (errorCallback != null) {
             try {
-                assertionCallback.handle(assertionError);
-            } catch (Exception ex) {
-                System.err.println("Exception while calling assertion error callback:");
-                ex.printStackTrace();
+                errorCallback.handle(ex);
+            } catch (Exception exceptionInCallback) {
+                System.err.println("Exception while calling failure callback: " +
+                    exceptionInCallback.getMessage());
+                exceptionInCallback.printStackTrace();
             }
         }
-        return assertionError;
+        return ex;
     }
 
     /**
@@ -102,9 +103,9 @@ public class Assert {
      */
     static public void fail(String message) {
         if (message == null) {
-            throw callAssertionCallback(new AssertionError());
+            throw callErrorCallback(new AssertionError());
         }
-        throw callAssertionCallback(new AssertionError(message));
+        throw callErrorCallback(new AssertionError(message));
     }
 
     /**
@@ -131,7 +132,7 @@ public class Assert {
             return;
         } else if (expected instanceof String && actual instanceof String) {
             String cleanMessage = message == null ? "" : message;
-            throw callAssertionCallback(new ComparisonFailure(cleanMessage, (String) expected,
+            throw callErrorCallback(new ComparisonFailure(cleanMessage, (String) expected,
                     (String) actual));
         } else {
             failNotEquals(message, expected, actual);

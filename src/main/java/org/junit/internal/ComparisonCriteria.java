@@ -46,13 +46,13 @@ public abstract class ComparisonCriteria {
                     arrayEquals(message, expected, actual);
                 } catch (ArrayComparisonFailure e) {
                     e.addDimension(i);
-                    throw Assert.callAssertionCallback(e);
+                    throw Assert.callErrorCallback(e);
                 }
             } else {
                 try {
                     assertElementsEqual(expected, actual);
                 } catch (AssertionError e) {
-                    throw Assert.callAssertionCallback(new ArrayComparisonFailure(header, e, i));
+                    throw Assert.callErrorCallback(new ArrayComparisonFailure(header, e, i));
                 }
             }
         }
