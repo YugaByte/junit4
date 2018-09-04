@@ -25,7 +25,7 @@ public class Assert {
 
     private static ErrorCallback errorCallback = null;
 
-    public void setErrorCallback(ErrorCallback callback) {
+    public static void setErrorCallback(ErrorCallback callback) {
         errorCallback = callback;
     }
 
